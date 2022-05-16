@@ -6,9 +6,13 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const doashboardRouter = require('./routes/dashboard');
+const dashboardRouter = require('./routes/dashboard');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 const app = express();
+app.enable("trust proxy");
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -26,11 +30,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/dashboard', doashboardRouter);
+app.use('/dashboard', dashboardRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true})
+);
 app.use((req, res) => {
+    // #swagger.tags = ['index']
     res.end('not routed, check path.');
 });
 
-app.listen(8000, () => {
+app.listen(process.env.PORT || 3000, () => {
 
 });

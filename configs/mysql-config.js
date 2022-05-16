@@ -1,6 +1,6 @@
 const config = {
-    dbname: '',
-    uname: '',
+    dbname: 'sql6490699',
+    uname: 'sql6490699',
     upwd: '',
     host: 'sql6.freesqldatabase.com',
     port: 3306,

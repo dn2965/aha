@@ -3,6 +3,9 @@ const validator = require('validator');
 const randtoken = require('rand-token');
 const connection = require('../db/databaseConnection');
 
+
+const RAND_TOKEN_SIZE = 20;
+
 exports.sendEmail = async (email, token, msg = 'Verify Email Verification') => {
     const mail = nodemailer.createTransport({
         service: 'gmail',
@@ -16,7 +19,7 @@ exports.sendEmail = async (email, token, msg = 'Verify Email Verification') => {
         from: 'aha29652965@gmail.com',
         to: email,
         subject: 'Email verification - by testing Aha exam',
-        html: `You requested for email verification, kindly use this <a href='http://localhost:8000/users/verify-email?token=${token}' target="_blank">${msg}</a>`
+        html: `You requested for email verification, kindly use this <a href='https://aha-dn2965.herokuapp.com/users/verify-email?token=${token}' target="_blank">${msg}</a>`
     };
 
     await mail.sendMail(mailOptions, (error) => {
@@ -44,36 +47,36 @@ exports.isVerificationSent = async (email) => new Promise((resolve, reject) => {
     });
 });
 
+exports.isLinkValid = async (token) => new Promise((resolve, reject) => {
+    const VerificationSentSql = `SELECT * FROM verifications WHERE verify = 0 AND token ="${token}"`;
+    connection.query(VerificationSentSql, (error, results) => {
+        if (error) reject(error);
+        resolve(results.length > 0);
+    });
+});
+
+
 exports.sendEmail2User = async (email) => {
-    await this.isVerificationSent().then(async (result) => {
-        const token = randtoken.generate(20);
-        if (result.isSent) {
-            return { success: true, msg: 'verification had been sent.' };
-        }
+    const checkVerificationSent = await this.isVerificationSent();
+    if (checkVerificationSent.isSent === true) {
+        return {success: true, msg: 'verification had been sent.'};
+    } else {
+        const token = randtoken.generate(RAND_TOKEN_SIZE);
         return this.sendEmail(email, token).then(() => {
-            connection.query('INSERT INTO verifications SET ?', { email, token });
-            return { success: true };
+            connection.query('INSERT INTO verifications SET ?', {email, token});
+            return {success: true};
         }, () => ({
             success: false,
             msg: 'send verification mail to user failed.'
         }));
-    }, (rej) => ({ success: false, msg: rej }));
+    }
 };
 
 exports.verifyEmail = async (token) => {
-    const checkEmailVerify = async () => new Promise((resolve, reject) => {
-        const checkEmailVerifySql = `SELECT * FROM verifications WHERE token = "${token}"`;
-        connection.query(checkEmailVerifySql, (error, results) => {
-            if (error) reject(error);
-            resolve(results);
-        });
-    });
-
-    const checkEmailVerifyResult = await checkEmailVerify();
-
-    if (checkEmailVerifyResult.length > 0 && checkEmailVerifyResult[0].verify === 0) {
+    const isLinkValid = await this.isLinkValid(token);
+    if (isLinkValid === true) {
         const updateVerify = async () => new Promise((resolve, reject) => {
-            const updateVerifySql = `UPDATE verifications SET ? WHERE email = "${checkEmailVerifyResult[0].email}"`;
+            const updateVerifySql = `UPDATE verifications SET ? WHERE token = "${token}"`;
             const data = {
                 verify: 1,
                 updated_at: new Date()
@@ -85,7 +88,7 @@ exports.verifyEmail = async (token) => {
         });
 
         await updateVerify();
-        return { success: true, msg: 'verified' };
+        return {success: true, msg: 'verified'};
     }
-    return { success: false, msg: 'token is not existing.' };
+    return {success: false, msg: 'token is invalid.'};
 };

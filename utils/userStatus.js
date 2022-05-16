@@ -28,7 +28,7 @@ exports.findUserByEmailAndUserType = async (email, userType) => {
 };
 
 exports.findUserByEmail = async (email) => {
-    const findByEmail = async () => new Promise((resolve, reject) => {
+    const findByEmail = () => new Promise((resolve, reject) => {
         const findByEmailSql = `SELECT *
                                 FROM users
                                 where email = "${email}"

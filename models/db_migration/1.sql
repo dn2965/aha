@@ -1,8 +1,8 @@
-drop table users;
-drop table usertype;
-drop table userloginhistory;
-drop table verifications;
-
+# drop table users;
+# drop table usertype;
+# drop table userloginhistory;
+# drop table verifications;
+#
 truncate users;
 truncate userloginhistory;
 truncate verifications;
@@ -56,9 +56,9 @@ CREATE TABLE IF NOT EXISTS `userloginhistory`
 -- create verifications
 CREATE TABLE IF NOT EXISTS `verifications`
 (
-    `id`         int(11)      NOT NULL AUTO_INCREMENT,
-    `email`      varchar(250) NOT NULL,
-    `token`      varchar(250)          DEFAULT NULL,
+    `id`         INT(11)      NOT NULL AUTO_INCREMENT,
+    `email`      VARCHAR(250) NOT NULL,
+    `token`      VARCHAR(250)          DEFAULT NULL,
     `verify`     TINYINT               DEFAULT 0,
     `created_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP,

@@ -3,8 +3,8 @@ const passport = require('../configs/passport');
 const userHelper = require('../utils/userStatus');
 
 const router = express.Router();
-
 router.get('/', (req, res) => {
+    // #swagger.tags = ['index']
     if (req.session.user) {
         res.redirect('/dashboard');
     } else {
@@ -13,6 +13,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
+    // #swagger.tags = ['index']
     if (userHelper.isActiveSessionUser(req) && !userHelper.isLocalUser(req)) {
         req.logout();
     }

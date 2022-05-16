@@ -15,8 +15,7 @@
                         alert(data.msg);
                     } else {
                         if (data.resendEmail) {
-                            $('#messageAreaForResend').html(
-                                `<div><a href="/users/resendEmail?email=${data.email}&token=${data.token}">Resend Email Verification</a></div>`);
+                            $('#messageAreaForResend').html(`<div><a href="/users/resendEmail?email=${data.email}&token=${data.token}">Resend Email Verification</a></div>`);
                         } else {
                             window.location.href = "/dashboard";
                         }
@@ -32,13 +31,11 @@
     <div style="width: 600px;">
         <div style="padding-top:4px;">
             <label style="display:inline-block; width: 180px;">email</label>
-            <input type="text" size="40" placeholder="Type your email" id="email"
-                   value="dn2965@gmail.com"/>
+            <input type="text" size="40" placeholder="Type your email" id="email" />
         </div>
         <div style="padding-top:4px;">
             <label style="display:inline-block; width: 180px;">password</label>
-            <input type="password" size="40" placeholder="Type your password" id="password"
-                   value="01234aA**"/>
+            <input type="password" size="40" placeholder="Type your password" id="password" />
         </div>
         <br/>
         <div id="messageArea"></div>

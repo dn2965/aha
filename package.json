@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "swagger-autogen": "node ./swagger.js",
     "lint": "eslint \"./**\""
   },
   "repository": {
@@ -36,6 +37,8 @@
     "rand-token": "^1.0.1",
     "session-memory-store": "^1.0.0",
     "shortid": "^2.2.16",
+    "swagger-autogen": "^2.21.1",
+    "swagger-ui-express": "^4.4.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {
