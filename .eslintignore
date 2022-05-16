@@ -1,0 +1,7 @@
+models/*.sql
+*.md
+*.json
+models/db_migration/*.sql
+views/*.ejs
+_.git/**
+.eslintrc.js

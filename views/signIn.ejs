@@ -1,0 +1,59 @@
+<html>
+<head>
+    <meta name="510750303959-nf4bqmtgfcest2puo7vg5vt8pajvij7h.apps.googleusercontent.com">
+    <title>do Sign In here</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            let email, password;
+            $("#submit").click(() => {
+                email = $("#email").val();
+                password = $("#password").val();
+                $.post("/users/login", {email: email, password: password}, data => {
+                    if (data.success === false) {
+                        alert(data.msg);
+                    } else {
+                        if (data.resendEmail) {
+                            $('#messageAreaForResend').html(
+                                `<div><a href="/users/resendEmail?email=${data.email}&token=${data.token}">Resend Email Verification</a></div>`);
+                        } else {
+                            window.location.href = "/dashboard";
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div><a href="/">home</a></div>
+    <br/>
+    <div style="width: 600px;">
+        <div style="padding-top:4px;">
+            <label style="display:inline-block; width: 180px;">email</label>
+            <input type="text" size="40" placeholder="Type your email" id="email"
+                   value="dn2965@gmail.com"/>
+        </div>
+        <div style="padding-top:4px;">
+            <label style="display:inline-block; width: 180px;">password</label>
+            <input type="password" size="40" placeholder="Type your password" id="password"
+                   value="01234aA**"/>
+        </div>
+        <br/>
+        <div id="messageArea"></div>
+        <br/>
+        <div style="text-align: right; width: 500px;">
+            <div id="messageAreaForResend" style="text-align: right;"></div>
+            <br/>
+            <input type="button" id="submit" value="Submit"/>
+        </div>
+        <div>
+            <a href="/auth/google">SignIn by Google Account</a>
+        </div>
+        <div>
+            <a href="/auth/facebook">SignIn by by Facebook Account</a>
+        </div>
+    </div>
+</body>
+</html>

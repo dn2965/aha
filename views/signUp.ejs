@@ -1,0 +1,151 @@
+<html>
+<head>
+    <title>Register A New Account</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(() => {
+            function validatePassword(password, reenteredPassword) {
+                let result = '';
+                if (password.length < 8) {
+                    result = 'Too short';
+                }
+                // check at least one lower character
+                else if (!password.match(/([a-z])/)) {
+                    result = 'contains at least one lower character';
+                }
+                // check at least one upper character
+                else if  (!password.match(/([A-Z])/)) {
+                    result = 'contains at least one upper character';
+                }
+                // check at least one digit character
+                else if  (!password.match(/([0-9])/)) {
+                    result = 'contains at least one digit character';
+                }
+                // check at least one special character
+                else if  (!password.match(/(?=.*[!@#$&*])/)) {
+                    debugger;
+                    result = 'contains at least one special character';
+                }// check at least one special character
+                else if  (password !== reenteredPassword) {
+                    result = 'please check the inputted two passwords, should be matched.';
+                }
+                updateMessageAndSendBtn(result === '', result);
+            }
+
+            const validateEmail = (email) => {
+                const result = String(email)
+                    .toLowerCase()
+                    .match(
+                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                    );
+                updateMessageAndSendBtn(result !== null, 'email is invalid.');
+            };
+
+            const validateUserName = (name) => {
+                const result = (name === '');
+                updateMessageAndSendBtn(result);
+            };
+
+            const updateMessageAndSendBtn = (valid, msg = 'register form is invalid.') => {
+                if (valid === true) {
+                    $('#messageArea').html('');
+                    $('#submit').attr('disabled', false);
+                } else {
+                    $('#messageArea').html(msg);
+                    $('#submit').attr('disabled', true);
+                }
+            };
+
+            const checkValid = () => {
+                validateUserName();
+                validateEmail($("#email").val());
+                validatePassword($('#password').val(), $('#reenteredPassword').val());
+            };
+            checkValid();
+
+            $("#submit").click(() => {
+
+                checkValid();
+                if ($('#submit').attr('disabled') === true) {
+                    $('#messageArea').html('register form is invalid.');
+                    return;
+                }
+
+                let email, pass, name, reenteredPass;
+                email = $("#email").val();
+                pass = $("#password").val();
+                name = $("#name").val();
+                $.post("/users/reg", {email: email, password: pass, name: name}, data => {
+                    alert(data.msg);
+                    if (data.success !== false) {
+                        window.location.href = "/";
+                    }
+                });
+            });
+
+            $('#password, #reenteredPassword').keyup(() => {
+                $('#messageArea').html(``);
+                const checkResult = validatePassword($('#password').val(), $('#reenteredPassword').val());
+                $('#submit').attr('disabled', checkResult !== true);
+                $('#messageArea').html(checkResult === true ? '' : checkResult);
+            });
+
+            $('#email').keyup(() => {
+                const email = $("#email").val();
+                if(validateEmail(email) !== null){
+                    $('#messageArea').html(``);
+                }else {
+                    $('#messageArea').html(`invalid email.`);
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+<div><a href="/">home</a></div>
+<br/>
+    <fieldset>
+        <legend>the password must be validated by the following conditions.</legend>
+        <p>contains at least one lower character</p>
+        <p>contains at least one upper character</p>
+        <p>contains at least one digit character</p>
+        <p>contains at least one special character</p>
+        <p>contains at least 8 characters</p>
+    </fieldset>
+    <br/>
+    <div style="width: 500px;">
+        <div style="padding-top:4px;">
+            <label style="display:inline-block; width: 90px;">Name</label>
+            <input type="name" name="name" size="40"  id="name" placeholder="Enter name" value="dd">
+        </div>
+        <div style="padding-top:4px;">
+            <label style="display:inline-block; width: 90px;">Email</label>
+            <input type="email" name="email" size="40"  id="email" placeholder="Enter email" value="dn2965@gmail.com">
+        </div>
+        <div style="padding-top:4px;">
+            <label style="display:inline-block; width: 90px;">Password</label>
+            <input type="password" name="password" size="40"  id="password" placeholder="********" value="01234aA**">
+        </div>
+        <div style="padding-top:4px;">
+            <label style="display:inline-block; width: 90px;">reenter</label>
+            <input type="password" name="password" size="40"  id="reenteredPassword" placeholder="********" value="01234aA**">
+        </div>
+        <br/>
+        <div id="messageArea"></div>
+        <br/>
+        <div style="text-align: right; width: 405px;">
+            <input type="button" id="submit" value="Send" />
+        </div>
+    </div>
+
+    <div>
+        <a href="/auth/google">SignUp by Google Account</a>
+    </div>
+    <div>
+        <a href="/auth/facebook">SignUp by by Facebook Account</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "name": "ahaexam",
+  "version": "1.0.0",
+  "description": "- express\r   - Passport JS\r     - after you have google OAuth' id",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "lint": "eslint \"./**\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dn2965/ahaExam.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dn2965/ahaExam/issues"
+  },
+  "homepage": "https://github.com/dn2965/ahaExam#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.7",
+    "ejs-locals": "^1.0.2",
+    "express": "^4.18.1",
+    "express-controller": "^0.3.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.2",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.7.5",
+    "passport": "^0.5.2",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth": "^2.0.0",
+    "password-validator": "^5.3.0",
+    "rand-token": "^1.0.1",
+    "session-memory-store": "^1.0.0",
+    "shortid": "^2.2.16",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "nodemon": "^2.0.12"
+  },
+  "nodemonConfig": {
+    "delay": 2500
+  }
+}

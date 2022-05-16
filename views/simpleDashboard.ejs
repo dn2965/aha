@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div>
+    <div><a href="/users/resetPassword">reset password</a></div>
+    <div><a href="/users/profile">user profile</a></div>
+</div>
+<br/>
+<br/>
+<div>Total number of users who have signed up: <span style="color:blue;"><%=dashboardStatistics.totalActiveUsers %></span></div>
+<div>Total number of users with active sessions today: <span style="color:blue;"><%=dashboardStatistics.totalActiveUserToday %></span></div>
+<div>Average number of active session users in the last 7 days rolling: <span style="color:blue;"><%=dashboardStatistics.avgUsersIn7Days %> user/per day</span></div>
+
+    <div class="table-data">
+<h2>Registered Users</h2>
+    <table border="1" >
+        <tr>
+            <th width="200px">Name</th>
+            <th width="200px">Email</th>
+            <th width="200px">Sign up date</th>
+            <th width="200px">Number of times logged in</th>
+            <th width="200px">Last Login</th>
+        </tr>
+
+        <%
+        if(userData.length!=0){
+        var i=1;
+
+        userData.forEach(function(data){
+        %>
+
+        <tr>
+            <td><%=data.name %></td>
+            <td><%=data.email %></td>
+            <td><%=data.updated_at %></td>
+            <td><%=data.timesLoggedIn %></td>
+            <td><%=data.lastLoginAt %></td>
+        </tr>
+
+        <%  i++; }) %>
+        <% } else{ %>
+            <tr>
+                <td colspan="7">No Data Found</td>
+            </tr>
+
+        <% } %>
+    </table>
+    </div>
+</body>
+</html>

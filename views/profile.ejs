@@ -1,0 +1,37 @@
+<html>
+<head>
+    <title>Profile</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $("#submit").click(() => {
+                const name = $("#name").val();
+                if (name.length <= 0) {
+                    alert('name is empty');
+                    window.location.href = "/users/profile";
+                } else {
+                    $.post("/users/updateProfile", {name: name}, data => {
+                        if (data.success === false) {
+                            alert(data.msg);
+                        }
+                        window.location.href = "/users/profile";
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div><a href="/">home</a> || <a href="/logout">Logout</a></div>
+    <div class="container">
+
+       <div>
+       <p>you can update your name here.</p>
+              name: <input type="text" size="40" placeholder="Type your name" id="name" value="<%=name %>"><br/>
+              email: <input type="text" size="40" placeholder="Type your email" id="email" value="<%=email %>" readonly="true" style="background-color: #cbc1c1b5;"><br/>
+              <input type="button" value="save" id="submit">
+          </div>
+
+    </div>
+</body>
+</html>
